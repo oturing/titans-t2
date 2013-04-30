@@ -1,0 +1,16 @@
+<html>
+<head>
+	<title>Municipios</title>
+</head>
+<body>
+
+<h1>Municipios</h1>
+
+<ul>
+	{% for muni in object_list %}
+		<li><a href="{% url muni_detail pk=muni.pk %}">{{muni.nome}}</a></li>
+	{% endfor %}
+</ul>
+
+</body>
+</html>

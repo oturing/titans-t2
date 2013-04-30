@@ -44,25 +44,6 @@ REGIOES_UFS = [
     (5, u'MT')
 ]
 
-class Municipio(models.Model):
-    uf = models.CharField(max_length=2, db_index=True,
-                          choices=br_states.STATE_CHOICES)
-    nome = models.CharField(max_length=64, db_index=True)
-    nome_ascii = models.CharField(max_length=64, db_index=True)
-    meso_regiao = models.ForeignKey('MesoRegiao')
-    capital = models.BooleanField(default=False)
-    latitude = models.FloatField(null=True, blank=True)
-    longitude = models.FloatField(null=True, blank=True)
-    geohash = models.CharField(max_length=16, blank=True, default='')
-
-    class Meta:
-        verbose_name = u'Município'
-        verbose_name_plural = u'Municípios'
-        ordering = ['nome_ascii']
-
-    def __unicode__(self):
-        return u'%s, %s' % (self.nome, self.uf)
-
 class MesoRegiao(models.Model):
     uf = models.CharField(max_length=2, db_index=True,
                           choices=br_states.STATE_CHOICES)
@@ -77,3 +58,26 @@ class MesoRegiao(models.Model):
 
     def __unicode__(self):
         return u'%s, %s' % (self.nome, self.uf)
+
+class Municipio(models.Model):
+    uf = models.CharField(max_length=2, db_index=True,
+                          choices=br_states.STATE_CHOICES)
+    nome = models.CharField(max_length=64, db_index=True)
+    nome_ascii = models.CharField(max_length=64, db_index=True)
+    meso_regiao = models.ForeignKey(MesoRegiao)
+    capital = models.BooleanField(default=False)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    geohash = models.CharField(max_length=16, blank=True, default='')
+
+    class Meta:
+        verbose_name = u'Município'
+        verbose_name_plural = u'Municípios'
+        ordering = ['nome_ascii']
+
+    def __unicode__(self):
+        return u'%s, %s' % (self.nome, self.uf)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('muni_detail', (), {'pk': self.id})

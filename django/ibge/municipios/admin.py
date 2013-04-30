@@ -5,7 +5,7 @@ class MunicipioAdmin(admin.ModelAdmin):
     list_display = ('pk', 'uf', 'nome')
     list_display_links = list_display
     search_fields = ('nome', 'nome_ascii',)
-    list_filter = ('uf',)
+    list_filter = ('capital', 'uf')
 
 class MesoRegiaoAdmin(admin.ModelAdmin):
     list_display = ('pk', 'uf', 'nome')

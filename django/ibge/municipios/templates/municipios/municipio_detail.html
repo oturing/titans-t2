@@ -1,0 +1,28 @@
+<html>
+<head>
+	<title>Municipio {{object.nome}}</title>
+</head>
+<body>
+
+<h1>{{object.nome}}</h1>
+
+<dl>
+	<dt>uf</dt>
+	<dd>{{object.get_uf_display}}</dd>
+	<dt>meso_regiao</dt>
+	<dd>{{object.meso_regiao}}</dd>
+	<dt>capital</dt>
+	<dd>{{object.capital}}</dd>
+	<dt>latitude</dt>
+	<dd>{{object.latitude}}</dd>
+	<dt>longitude</dt>
+	<dd>{{object.longitude}}</dd>
+	<dt>geohash</dt>
+	<dd>{{object.geohash}}</dd>
+
+	<!-- FIXME: integra com o Gmaps -->
+
+</dl>
+
+</body>
+</html>

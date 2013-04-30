@@ -1,0 +1,16 @@
+<html>
+<head>
+	<title>UFs</title>
+</head>
+<body>
+
+<h1>UFs</h1>
+
+<ul>
+	{% for uf in object_list %}
+		<li><a href="{% url munis uf.sigla %}">{{uf.sigla}}</a></li>
+	{% endfor %}
+</ul>
+
+</body>
+</html>
