@@ -1,0 +1,17 @@
+pesquisar:
+
+- ciclo de vida de uma thread no Flask
+
+- uma thread atende mais de uma requisição
+
+- flask testing
+
+- app factory
+
+- sqlalchemy
+
+- blueprints
+
+- flask login
+
+
