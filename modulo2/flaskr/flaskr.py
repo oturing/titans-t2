@@ -55,7 +55,7 @@ def inserir_entrada():
     flask.flash('Nova entrada registrada com sucesso')
     return flask.redirect(flask.url_for('exibir_entradas'))
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/entrar', methods=['GET', 'POST'])
 def login():
     erro = None
     if flask.request.method == 'POST':
@@ -69,7 +69,7 @@ def login():
             return flask.redirect(flask.url_for('exibir_entradas'))
     return flask.render_template('login.html', erro=erro)
 
-@app.route('/logout')
+@app.route('/sair')
 def logout():
     flask.session.pop('logado', None)
     flask.flash('Logout OK')
