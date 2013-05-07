@@ -33,17 +33,17 @@ class FlaskrTestCase(unittest.TestCase):
                 follow_redirects=True)
 
     def testar_login(self):
-        res = self.fazer_login('admin', 'default')
-        self.assertIn(b'Login OK', res.data)
+        rv = self.fazer_login('admin', 'default')
+        self.assertIn(b'Login OK', rv.data)
 
-    @unittest.skip('TODO: implementar com flask.testing')
+    @unittest.skip('TODO: fazer com mock?')
     def testar_login_seta_secao(self):
         dados = dict(username='admin',
                      password='default')
-        with flaskr.app.test_client() as c:
-            with c.session_transaction() as session:
-                c.post('/entrar', dados)
-                self.assertTrue(session['logado'])
+        with flaskr.app.test_request_context('/entrar',
+                method='POST', data=dados):
+            flaskr.app.preprocess_request()
+            self.assertTrue(flask.session['logado'])
 
     def testar_login_invalido(self):
         rv = self.fazer_login('adminx', 'default')
