@@ -33,8 +33,17 @@ class FlaskrTestCase(unittest.TestCase):
                 follow_redirects=True)
 
     def testar_login(self):
-        rv = self.fazer_login('admin', 'default')
-        self.assertIn(b'Login OK', rv.data)
+        res = self.fazer_login('admin', 'default')
+        self.assertIn(b'Login OK', res.data)
+
+    @unittest.skip('TODO: implementar com flask.testing')
+    def testar_login_seta_secao(self):
+        dados = dict(username='admin',
+                     password='default')
+        with flaskr.app.test_client() as c:
+            with c.session_transaction() as session:
+                c.post('/entrar', dados)
+                self.assertTrue(session['logado'])
 
     def testar_login_invalido(self):
         rv = self.fazer_login('adminx', 'default')
@@ -42,9 +51,20 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.fazer_login('admin', 'defaultx')
         self.assertIn(b'Senha inválida', rv.data)
 
-    def teste_login_logout(self):
+    def testar_login_logout(self):
         rv = self.client.get('/sair', follow_redirects=True)
         self.assertIn(b'Logout OK', rv.data)
+
+    def testar_nova_entrada(self):
+        self.fazer_login('admin', 'default')
+        rv = self.client.post('/inserir', data=dict(
+            titulo='<Olá>',
+            texto='<strong>HTML</strong> é permitido aqui'
+        ), follow_redirects=True)
+        self.assertEquals(rv.status_code, 200)
+        self.assertNotIn(b'nenhuma entrada', rv.data)
+        self.assertIn(b'&lt;Olá&gt;', rv.data)
+        self.assertIn(b'<strong>HTML</strong> é permitido aqui', rv.data)
 
 
 if __name__ == '__main__':
