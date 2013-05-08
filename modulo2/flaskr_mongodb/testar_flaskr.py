@@ -7,8 +7,8 @@ import unittest
 import tempfile
 
 import pymongo
-
 import flask
+import mock
 
 import flaskr
 
@@ -41,14 +41,12 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.fazer_login('admin', 'default')
         self.assertIn(b'Login OK', rv.data)
 
-    @unittest.skip('TODO: fazer com mock?')
-    def testar_login_seta_secao(self):
+    @mock.patch('flaskr.flask.session', new_callable=lambda: {})
+    def testar_login_seta_secao(self, mocked_session):
         dados = dict(username='admin',
                      password='default')
-        with flaskr.app.test_request_context('/entrar',
-                method='POST', data=dados):
-            flaskr.app.preprocess_request()
-            self.assertTrue(flask.session['logado'])
+        self.client.post('/entrar', data=dados)
+        self.assertTrue(mocked_session['logado'])
 
     def testar_login_invalido(self):
         rv = self.fazer_login('adminx', 'default')
