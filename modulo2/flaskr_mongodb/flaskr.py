@@ -4,9 +4,12 @@ from __future__ import unicode_literals
 
 # todos os imports
 from contextlib import closing
-import sqlite3
+
+from pymongo import MongoClient
+
 import flask
 from flask import g
+
 
 # configuração
 DATABASE = '/tmp/flaskr.db'
@@ -20,13 +23,8 @@ app = flask.Flask(__name__)
 app.config.from_object(__name__)
 
 def conectar_bd():
-    return sqlite3.connect(app.config['DATABASE'])
-
-def criar_bd():
-    with closing(conectar_bd()) as bd:
-        with app.open_resource('esquema.sql') as sql:
-            bd.cursor().executescript(sql.read())
-        bd.commit()
+    client = MongoClient()
+    return client[app.config['DATABASE']]
 
 @app.before_request
 def pre_requisicao():
@@ -34,14 +32,12 @@ def pre_requisicao():
 
 @app.teardown_request
 def encerrar_requisicao(exception):
-    g.bd.close()
+    g.bd.connection.close()
 
 @app.route('/')
 def exibir_entradas():
-    sql = '''select titulo, texto from entradas order by id desc'''
-    cur = g.bd.execute(sql)
-    entradas = [dict(titulo=titulo, texto=texto)
-                    for titulo, texto in cur.fetchall()]
+    # select titulo, texto from entradas order by id desc
+    entradas = g.bd.posts.find()
     return flask.render_template('exibir_entradas.html', entradas=entradas)
 
 @app.route('/inserir', methods=['POST'])

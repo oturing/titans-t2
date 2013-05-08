@@ -14,4 +14,8 @@ pesquisar:
 
 - flask login
 
+- rednose
+
+- nose e py.test
+
 
