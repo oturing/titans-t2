@@ -36,7 +36,7 @@ class FlaskrTestCase(unittest.TestCase):
     def testar_login(self):
         rv = self.fazer_login('admin', 'default')
         self.assertIn(b'Login OK', rv.data)
-    
+
     @mock.patch('flaskr.flask.session', new_callable=lambda: {})
     def testar_login_seta_secao(self, mocked_session):
         dados = dict(username='admin',
