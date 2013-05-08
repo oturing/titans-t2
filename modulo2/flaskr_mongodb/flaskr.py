@@ -44,10 +44,14 @@ def exibir_entradas():
 def inserir_entrada():
     if not flask.session.get('logado'):
         flask.abort(401)
-    sql = '''insert into entradas (titulo, texto) values (?, ?)'''
-    g.bd.execute(sql, [flask.request.form['titulo'],
-                       flask.request.form['texto']])
-    g.bd.commit()
+
+    # insert into entradas (titulo, texto) values (?, ?)
+
+    post = dict(titulo=flask.request.form['titulo'],
+                texto=flask.request.form['texto'])
+
+    entradas = g.bd.posts.insert(post)
+
     flask.flash('Nova entrada registrada com sucesso')
     return flask.redirect(flask.url_for('exibir_entradas'))
 

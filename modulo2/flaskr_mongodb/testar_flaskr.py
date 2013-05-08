@@ -21,6 +21,7 @@ class FlaskrTestCase(unittest.TestCase):
 
     def tearDown(self):
         '''TODO: fechar conexao com o MongoDB'''
+        flaskr.conectar_bd().drop_collection('posts')
 
     def testar_conexao(self):
         db = flaskr.conectar_bd()
@@ -59,7 +60,6 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.client.get('/sair', follow_redirects=True)
         self.assertIn(b'Logout OK', rv.data)
 
-    @unittest.skip('TODO: migrar para MongoDB')
     def testar_nova_entrada(self):
         self.fazer_login('admin', 'default')
         rv = self.client.post('/inserir', data=dict(
